@@ -1,0 +1,14 @@
+# dataset path
+train: E:\gitcode\project\ultralytics\dataset\images\train
+val: E:\gitcode\project\ultralytics\dataset\images\val
+test: E:\gitcode\project\ultralytics\dataset\images\test
+
+# train: ./dataset/images/train
+# val: ./dataset/images/val
+# test: ./dataset/images/test
+
+# number of classes
+nc: 1
+
+# class names
+names: ['ship']
