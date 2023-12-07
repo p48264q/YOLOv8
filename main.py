@@ -18,9 +18,9 @@ if __name__ == '__main__':
     # model.train(**{'cfg': 'ultralytics/cfg/exp1.yaml', 'data': 'dataset/data.yaml'})
     #
     # # 模型验证
-    # model = YOLO('runs/detect/train3/weights/best.pt')
+    # model = YOLO('runs/detect/train2/weights/best.pt')
     # model.val(**{'data': 'dataset/data.yaml'})
     #
     # 模型推理
-    model = YOLO('runs/detect/train3/weights/best.pt')
+    model = YOLO('runs/detect/train2/weights/best.pt')
     model.predict(source='dataset/images/test', **{'save': True})

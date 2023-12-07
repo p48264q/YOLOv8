@@ -8,7 +8,7 @@ test: E:\gitcode\project\ultralytics\dataset\images\test
 # test: ./dataset/images/test
 
 # number of classes
-nc: 1
+nc: 7
 
 # class names
-names: ['ship']
+names: ['ship', 'crazing', 'patches', 'inclusion', 'pitted_surface', 'rolled-in_scale', 'scratches']
