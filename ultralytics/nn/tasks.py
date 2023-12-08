@@ -17,6 +17,7 @@ from ultralytics.utils.loss import v8ClassificationLoss, v8DetectionLoss, v8Pose
 from ultralytics.utils.plotting import feature_visualization
 from ultralytics.utils.torch_utils import (fuse_conv_and_bn, fuse_deconv_and_bn, initialize_weights, intersect_dicts,
                                            make_divisible, model_info, scale_img, time_sync)
+from ultralytics.nn.modules.AFPN import ASFF_2,ASFF_3
 
 try:
     import thop
@@ -712,6 +713,23 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
                 args[2] = make_divisible(min(args[2], max_channels) * width, 8)
         elif m is RTDETRDecoder:  # special case, channels arg must be passed in index 1
             args.insert(1, [ch[x] for x in f])
+        elif m is ASFF_2:
+            if args[0] == 0:
+                c2 = ch[f[0]]
+                args = [ch[f[0]],args[0],[ch[x] for x in f]]
+            else:
+                c2 = ch[f[-1]]
+                args = [ch[f[-1]],args[0],[ch[x] for x in f]]
+        elif m is ASFF_3:
+            if args[0] == 0:
+                c2 = ch[f[0]]
+                args = [ch[f[0]],args[0],[ch[x] for x in f]]
+            elif args[0] ==1:
+                c2 = ch[f[1]]
+                args = [ch[f[1]],args[0],[ch[x] for x in f]]
+            else:
+                c2 = ch[f[-1]]
+                args = [ch[f[-1]], args[0], [ch[x] for x in f]]
         else:
             c2 = ch[f]
 
