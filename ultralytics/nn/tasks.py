@@ -18,6 +18,7 @@ from ultralytics.utils.plotting import feature_visualization
 from ultralytics.utils.torch_utils import (fuse_conv_and_bn, fuse_deconv_and_bn, initialize_weights, intersect_dicts,
                                            make_divisible, model_info, scale_img, time_sync)
 from ultralytics.nn.modules.AFPN import ASFF_2,ASFF_3
+from ultralytics.nn.modules.BiFormer import *
 
 try:
     import thop
@@ -730,6 +731,8 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             else:
                 c2 = ch[f[-1]]
                 args = [ch[f[-1]], args[0], [ch[x] for x in f]]
+        elif m in {BiLevelRoutingAttention}:
+            args = [ch[f],*args]
         else:
             c2 = ch[f]
 
