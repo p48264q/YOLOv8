@@ -19,6 +19,8 @@ from ultralytics.utils.torch_utils import (fuse_conv_and_bn, fuse_deconv_and_bn,
                                            make_divisible, model_info, scale_img, time_sync)
 from ultralytics.nn.modules.AFPN import ASFF_2,ASFF_3
 from ultralytics.nn.modules.BiFormer import *
+from ultralytics.nn.modules.SA import ShuffleAttention
+from ultralytics.nn.modules.VanillaNet import (vanillanetBlock)
 
 try:
     import thop
@@ -733,6 +735,23 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
                 args = [ch[f[-1]], args[0], [ch[x] for x in f]]
         elif m in {BiLevelRoutingAttention}:
             args = [ch[f],*args]
+        # elif m is ShuffleAttention:
+        #     c1, c2 = ch[f], args[0]
+        #     if c2 != nc:
+        #         c2 = make_divisible(min(c2, max_channels) * width, 8)
+        #     args = [c1, *args[1:]]
+        elif m in {ShuffleAttention}:
+            args = [ch[f], *args]
+
+        #出现替代错误
+        # elif m in {vanillanetBlock}:
+        #     args = [ch[f], *args]
+        #
+        elif m is vanillanetBlock:
+            c1, c2 = ch[f], args[0]
+            if c2 != torch.NoneType:
+                c2 = make_divisible(c2 * width, 8)
+            args = [c1, c2, *args[1:]]
         else:
             c2 = ch[f]
 
